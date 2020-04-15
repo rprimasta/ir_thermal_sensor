@@ -18,7 +18,8 @@ class App extends Component {
       suhu_tresshold:37.5,
       speedoRender: false,
       alert_text:'',
-      alert_text_color:'red'
+      alert_text_color:'red',
+      alert_show:false
     };
     Settings.Load();
     
@@ -50,16 +51,17 @@ class App extends Component {
         this.sampling_suhu.push(message.suhu);
         this.setState({suhu: message.suhu}); 
         if (this.sampling_suhu.length == 4){
-            var avg = this.average(this.sampling_suhu);
-            if (avg >= this.state.suhu_tresshold){
-              setTimeout(function() {that.sampling_suhu = [] }, 10000);
+            var dataCompare = this.sampling_suhu[this.sampling_suhu.length-1];
+            if (dataCompare >= this.state.suhu_tresshold){
+              this.sampling_suhu = [];
+              // setTimeout(function() {that.sampling_suhu = [] }, 10000);
               this.setState({suhu: message.suhu, alert_text: 'Suhu melewati tresshold',alert_text_color: 'red'}); 
-              setTimeout(function() {that.modalAlert.show("Suhu tidak normal !!!","Suhu Tubuh " + avg+"°",'danger'); }, 1000);
+              setTimeout(function() {that.modalAlert.show("Suhu tidak normal !!!","Suhu Tubuh " + dataCompare+"°",'danger'); }, 1000);
             }else{
               this.sampling_suhu = [];
               this.setState({ alert_text: '', suhu: message.suhu}); 
-              setTimeout(function() {that.sampling_suhu = [] }, 5000);
-              setTimeout(function() {that.modalAlert.show("Suhu normal","Suhu Tubuh " + avg+"°",'success'); }, 1000);
+              // setTimeout(function() {that.sampling_suhu = [] }, 5000);
+              setTimeout(function() {that.modalAlert.show("Suhu normal","Suhu Tubuh " + dataCompare+"°",'success'); }, 1000);
             }
         }
        
@@ -120,7 +122,7 @@ class App extends Component {
         <AlertTresshold ref={r => this.modalAlert = r}  />
         
         <Container style={{display:'flex', alignItems:'center', justifyContent:'center',flexDirection: 'column', flex:1, height:'100%'}}>
-          <Card style={{margin:0, height:'70vh', width:'50vw' ,alignSelf: "center"}}>
+          <Card style={{margin:0, height:'70vh', width:'65vw' ,alignSelf: "center"}}>
             <Card.Header>
               Sensor Suhu Tubuh
             
