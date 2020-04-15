@@ -34,7 +34,7 @@ class App extends Component {
     this.ws.onmessage = evt => {
       // on receiving a message, add it to the list of messages
       const message = JSON.parse(evt.data)
-      console.log(this.state.jarak_tresshold);
+      console.log(message);
       if (message.jarak <= this.state.jarak_tresshold){
         if (message.suhu >= this.state.suhu_tresshold){
           this.setState({ suhu: message.suhu}); 
@@ -84,7 +84,7 @@ class App extends Component {
     })
   }
   render(){
-    console.log(this.state.suhu_tresshold);
+
     return (
       <div className="App">
          
