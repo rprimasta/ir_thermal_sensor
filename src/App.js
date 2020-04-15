@@ -54,12 +54,12 @@ class App extends Component {
             if (avg >= this.state.suhu_tresshold){
               setTimeout(function() {that.sampling_suhu = [] }, 10000);
               this.setState({suhu: message.suhu, alert_text: 'Suhu melewati tresshold',alert_text_color: 'red'}); 
-              setTimeout(function() {that.modalAlert.show("Suhu tidak normal !!!","Suhu Tubuh " + message.suhu+"°",'danger'); }, 1000);
+              setTimeout(function() {that.modalAlert.show("Suhu tidak normal !!!","Suhu Tubuh " + avg+"°",'danger'); }, 1000);
             }else{
               this.sampling_suhu = [];
               this.setState({ alert_text: '', suhu: message.suhu}); 
               setTimeout(function() {that.sampling_suhu = [] }, 5000);
-              setTimeout(function() {that.modalAlert.show("Suhu normal","Suhu Tubuh " + message.suhu+"°",'success'); }, 1000);
+              setTimeout(function() {that.modalAlert.show("Suhu normal","Suhu Tubuh " + avg+"°",'success'); }, 1000);
             }
         }
        
