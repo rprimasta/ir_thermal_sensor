@@ -18,12 +18,12 @@ class App extends Component {
       suhu_tresshold:37.5,
       speedoRender: false,
       alert_text:'',
-      alert_text_color:'red',
-      alert_show:false
+      alert_text_color:'red'
     };
     Settings.Load();
     
   }
+  alert_show = false
   average = (elmt)=>{
     var sum = 0;
     for( var i = 0; i < elmt.length; i++ ){
@@ -50,15 +50,17 @@ class App extends Component {
       if (message.jarak <= this.state.jarak_tresshold){
         this.sampling_suhu.push(message.suhu);
         this.setState({suhu: message.suhu}); 
-        if (this.sampling_suhu.length == 4 && this.state.alert_show == false){
+        if (this.sampling_suhu.length == 4 && this.alert_show == false){
             var dataCompare = this.sampling_suhu[this.sampling_suhu.length-1];
             if (dataCompare >= this.state.suhu_tresshold){
               this.sampling_suhu = [];
               // setTimeout(function() {that.sampling_suhu = [] }, 10000);
-              this.setState({alert_show:true, suhu: message.suhu, alert_text: 'Suhu melewati tresshold',alert_text_color: 'red'}); 
+              this.alert_show = true;
+              this.setState({ suhu: message.suhu, alert_text: 'Suhu melewati tresshold',alert_text_color: 'red'}); 
               setTimeout(function() {that.modalAlert.show("Suhu tidak normal !!!","Suhu Tubuh " + dataCompare+"°",'danger'); }, 1000);
             }else{
               this.sampling_suhu = [];
+              this.alert_show = true;
               this.setState({alert_show:true, alert_text: '', suhu: message.suhu}); 
               // setTimeout(function() {that.sampling_suhu = [] }, 5000);
               setTimeout(function() {that.modalAlert.show("Suhu normal","Suhu Tubuh " + dataCompare+"°",'success'); }, 1000);
@@ -67,11 +69,11 @@ class App extends Component {
        
       }else{ 
         //setTimeout(function() {that.sampling_suhu = [] }, 1000);
-        if (this.state.alert_show == true){
-            if (message.jarak >= 50){
-              this.setState({ alert_show: false}); 
-            }
-        }
+        if (this.alert_show == true)
+            if (message.jarak >= 50)
+              this.alert_show = false;
+            
+        
         
         this.sampling_suhu = [];
         this.modalAlert.close();
