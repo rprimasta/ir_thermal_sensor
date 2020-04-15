@@ -7,33 +7,46 @@ import Settings from '../Config'
 export default class ModalSettings extends React.Component{
     constructor(props){
         super(props);
-        Settings.Load();
+
         
         this.state = { 
-            show: props.show, 
-            tresshold:Settings.Data.Treshold_Suhu
+            show: false
         };
         
     }
     
-    componentWillReceiveProps(nextProps){
-        if(this.state.show!==nextProps.modal){
-        this.setState({show: nextProps.modal})
-      }
-    }
+    // componentWillReceiveProps(nextProps){
+    //   if(this.state.show!==nextProps.modal){
+    //     this.setState({show: nextProps.modal})
+    //   }
+    // }
     close = () => this.setState({ show: false});
-    save= ()=>{
-        Settings.Save();
-        this.close();
+  
+    show = () => {
+      return new Promise((resolve,reject)=>{
+          Settings.Load();
+      
+          this.setState({ 
+              show: true,
+              tresshold:Settings.Data.Treshold_Suhu
+          });
+          this.resolveShow = resolve;
+      });
+     
     }
-    onTressholdChange = function(v){
-         
+    save= ()=>{
+        Settings.Data.Treshold_Suhu = this.state.tresshold;
+        Settings.Save();
+        this.resolveShow();
+        this.close();
+       
     }
     render() {
         return (
             <div className="modal-container">
             <Modal
               show={this.state.show}
+
               onHide={this.close}
               aria-labelledby="contained-modal-title"
             > 

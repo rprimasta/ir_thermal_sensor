@@ -52,10 +52,13 @@ class ws:
             ] 
      
         while True: 
-            await asyncio.sleep(0)
-            # try:
-            res = await asyncio.gather(*input_coroutines)
-            # except Exception as e:
+            try:
+                await asyncio.sleep(0)
+                # try:
+                res = await asyncio.gather(*input_coroutines)
+
+            except Exception as e:
+                a = 0
             #     print('Websocket listen exception')
             #     print(e)  
 

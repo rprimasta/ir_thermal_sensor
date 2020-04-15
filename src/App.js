@@ -6,17 +6,21 @@ import { Button,Container,Row,Col,Card,FormText } from 'react-bootstrap';
 import windowSize from 'react-window-size';
 import Thermometer from 'react-thermometer-component'
 import ReactSpeedometer from "react-d3-speedometer";
+import Settings from './Config';
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
       showSettingModal:false,
-      suhu: 25
+      suhu: 25,
+      suhu_tresshold:37.5,
+      speedoRender: false
     };
-  
+    Settings.Load();
+    
   }
-  
+
   connect = ()=>{
     const that = this
     this.ws = new WebSocket('ws://localhost:8887/sensor');
@@ -28,9 +32,13 @@ class App extends Component {
     this.ws.onmessage = evt => {
       // on receiving a message, add it to the list of messages
       const message = JSON.parse(evt.data)
-  
-      this.setState(state => ({ suhu: message.suhu})); 
-      console.log(message);
+      if (message.suhu >= this.state.suhu_tresshold){
+         this.setState({ alert_text: 'Suhu melewati tresshold'}); 
+      }else{
+        this.setState({ alert_text: ''}); 
+      }
+      this.setState({ suhu: message.suhu}); 
+      // console.log(message);
     }
 
     this.ws.onclose = (e) => {
@@ -43,32 +51,51 @@ class App extends Component {
                 }, 1000); 
     }
   }
-  clickMe = ()=>{
-    // this.setState({ suhu: 34}); 
-    this.setState(state => ({ suhu: 34})); 
+  loadToState = ()=>{
+    const that = this;
+    this.setState(
+      {
+        suhu_tresshold:Settings.Data.Treshold_Suhu,
+        speedoRender:true
+      });
+      setTimeout(function() {that.setState({speedoRender:false}); }, 1);
+     
+  }
+  onModalSaved = ()=>{
+  
+  
   }
   componentDidMount(){
-    this.connect()
+    this.connect();
+    this.loadToState();
+  
+  }
+  openModalSetting = ()=>{
+    this.modalSetting.show().then(()=>{
+      this.loadToState();
+    })
   }
   render(){
+    console.log(this.state.suhu_tresshold);
     return (
       <div className="App">
          
         <body style={{paddingTop:15,height:'100vh' ,backgroundColor:"#29292A"}}>
           
-        <ModalSettings modal={this.state.showSettingModal} />
+          
+        <ModalSettings ref={r => this.modalSetting = r}  />
  
         <Container style={{display:'flex', alignItems:'center', justifyContent:'center',flexDirection: 'column', flex:1, height:'100%'}}>
           <Card style={{margin:0, height:'50vh', width:'50vw' ,alignSelf: "center"}}>
             <Card.Header>
               Sensor Suhu Tubuh
-              <Button onClick={this.clickMe}  style={{float:'right'}}>aaaa</Button>
-              <Button onClick={()=>{this.setState({showSettingModal:true});} } style={{float:'right'}}>Settings</Button>
+            
+              <Button onClick={this.openModalSetting } style={{float:'right'}}>Settings</Button>
             </Card.Header>
             <Card.Body>  
                 <Container style={{justifyContent:'center'}}>
                             <Row className="justify-content-md-center">
-                              <h4>Suhu Badan</h4>
+                            <h4>Suhu Badan: {this.state.suhu}°</h4>
                             </Row>
                             <Row className="justify-content-md-center">
                               <ReactSpeedometer 
@@ -78,10 +105,14 @@ class App extends Component {
                                 segments={2}
                                 value={this.state.suhu}
                                 segmentColors={["green", "red"]}
-                                customSegmentStops={[33,37.5, 43]}
+                                forceRender={this.state.speedoRender}
+                                customSegmentStops={[33,this.state.suhu_tresshold, 43]}
                               />
                             </Row>
-                          {/* <Thermometer
+                            <Row className="justify-content-center">
+                              <h4 style={{color:'red'}}>{this.state.alert_text}</h4>
+                            </Row> 
+                          {/* <Thermometer 
                           theme="light"
                           value="18"
                           max="100"
