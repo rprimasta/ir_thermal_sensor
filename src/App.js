@@ -23,8 +23,17 @@ class App extends Component {
     Settings.Load();
     
   }
+  average = (elmt)=>{
+    var sum = 0;
+    for( var i = 0; i < elmt.length; i++ ){
+        sum += parseInt( elmt[i], 10 ); //don't forget to add the base
+    }
 
+    var avg = sum/elmt.length;
+    return avg;
+  }
   connect = ()=>{
+    this.sampling_suhu = [];
     const that = this
     this.ws = new WebSocket('ws://localhost:8887/sensor');
     this.ws.onopen = () => {
@@ -36,16 +45,27 @@ class App extends Component {
       // on receiving a message, add it to the list of messages
       const message = JSON.parse(evt.data)
       console.log(message);
+      const that = this;
       if (message.jarak <= this.state.jarak_tresshold){
-        if (message.suhu >= this.state.suhu_tresshold){
-          this.setState({ suhu: message.suhu}); 
-          this.modalAlert.show("Suhu tidak normal !!!","Suhu Tubuh " + message.suhu+"°",'danger');
-          this.setState({ alert_text: 'Suhu melewati tresshold',alert_text_color: 'red'}); 
-        }else{
-          this.modalAlert.show("Suhu normal","Suhu Tubuh " + message.suhu+"°",'success');
-          this.setState({ alert_text: ''}); 
+        this.sampling_suhu.push(message.suhu);
+        this.setState({suhu: message.suhu}); 
+        if (this.sampling_suhu.length == 4){
+            var avg = this.average(this.sampling_suhu);
+            if (avg >= this.state.suhu_tresshold){
+              setTimeout(function() {that.sampling_suhu = [] }, 10000);
+              this.setState({suhu: message.suhu, alert_text: 'Suhu melewati tresshold',alert_text_color: 'red'}); 
+              setTimeout(function() {that.modalAlert.show("Suhu tidak normal !!!","Suhu Tubuh " + message.suhu+"°",'danger'); }, 1000);
+            }else{
+              this.sampling_suhu = [];
+              this.setState({ alert_text: '', suhu: message.suhu}); 
+              setTimeout(function() {that.sampling_suhu = [] }, 5000);
+              setTimeout(function() {that.modalAlert.show("Suhu normal","Suhu Tubuh " + message.suhu+"°",'success'); }, 1000);
+            }
         }
-      }else{
+       
+      }else{ 
+        //setTimeout(function() {that.sampling_suhu = [] }, 1000);
+        this.sampling_suhu = [];
         this.modalAlert.close();
         this.setState({ suhu: 33}); 
          this.setState({ alert_text: 'Mendekat',alert_text_color: 'blue',suhu: 33}); 
