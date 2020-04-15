@@ -69,14 +69,17 @@ class App extends Component {
        
       }else{ 
         //setTimeout(function() {that.sampling_suhu = [] }, 1000);
-        if (this.alert_show == true)
-            if (message.jarak >= 50)
+        if (this.alert_show == true){
+            if (message.jarak >= 50){
+              this.modalAlert.close();
               this.alert_show = false;
+            }
+        }
             
         
         
         this.sampling_suhu = [];
-        this.modalAlert.close();
+        
         this.setState({ suhu: 33}); 
          this.setState({ alert_text: 'Mendekat',alert_text_color: 'blue',suhu: 33}); 
       }  
