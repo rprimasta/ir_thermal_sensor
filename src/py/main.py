@@ -8,7 +8,8 @@ def randrange_float(start, stop, step):
 async def task_sensor():
   
     suhu = randrange_float(34, 39, 0.1)
-    await sock.broadcast_message({'suhu':suhu})
+    jarak = randrange_float(1, 10, 0.1)
+    await sock.broadcast_message({'suhu':suhu, 'jarak':jarak})
 
 
 

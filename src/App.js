@@ -13,9 +13,11 @@ class App extends Component {
     super(props);
     this.state = {
       showSettingModal:false,
-      suhu: 25,
+      suhu: 33,
       suhu_tresshold:37.5,
-      speedoRender: false
+      speedoRender: false,
+      alert_text:'',
+      alert_text_color:'red'
     };
     Settings.Load();
     
@@ -32,13 +34,18 @@ class App extends Component {
     this.ws.onmessage = evt => {
       // on receiving a message, add it to the list of messages
       const message = JSON.parse(evt.data)
-      if (message.suhu >= this.state.suhu_tresshold){
-         this.setState({ alert_text: 'Suhu melewati tresshold'}); 
+      console.log(this.state.jarak_tresshold);
+      if (message.jarak <= this.state.jarak_tresshold){
+        if (message.suhu >= this.state.suhu_tresshold){
+          this.setState({ suhu: message.suhu}); 
+          this.setState({ alert_text: 'Suhu melewati tresshold',alert_text_color: 'red'}); 
+        }else{
+          this.setState({ alert_text: ''}); 
+        }
       }else{
-        this.setState({ alert_text: ''}); 
-      }
-      this.setState({ suhu: message.suhu}); 
-      // console.log(message);
+        this.setState({ suhu: 33}); 
+         this.setState({ alert_text: 'Mendekat',alert_text_color: 'blue',suhu: 33}); 
+      } 
     }
 
     this.ws.onclose = (e) => {
@@ -56,6 +63,7 @@ class App extends Component {
     this.setState(
       {
         suhu_tresshold:Settings.Data.Treshold_Suhu,
+        jarak_tresshold:Settings.Data.Treshold_Jarak,
         speedoRender:true
       });
       setTimeout(function() {that.setState({speedoRender:false}); }, 1);
@@ -110,7 +118,7 @@ class App extends Component {
                               />
                             </Row>
                             <Row className="justify-content-center">
-                              <h4 style={{color:'red'}}>{this.state.alert_text}</h4>
+                              <h4 style={{color:this.state.alert_text_color}}>{this.state.alert_text}</h4>
                             </Row> 
                           {/* <Thermometer 
                           theme="light"

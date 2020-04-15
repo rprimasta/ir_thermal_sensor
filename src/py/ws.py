@@ -27,7 +27,7 @@ class ws:
         except Exception as e:
             print(e)
         finally:
-            print('Websocket Network '+str(len(self.ws))+' disconnected')
+            print('Websocket sensor '+str(len(self.ws))+' disconnected')
             self.ws.pop(websocket)
 
 

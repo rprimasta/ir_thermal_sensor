@@ -28,14 +28,16 @@ export default class ModalSettings extends React.Component{
       
           this.setState({ 
               show: true,
-              tresshold:Settings.Data.Treshold_Suhu
+              th_suhu:Settings.Data.Treshold_Suhu,
+              th_jarak:Settings.Data.Treshold_Jarak
           });
           this.resolveShow = resolve;
       });
      
     }
     save= ()=>{
-        Settings.Data.Treshold_Suhu = this.state.tresshold;
+        Settings.Data.Treshold_Suhu = this.state.th_suhu;
+        Settings.Data.Treshold_Jarak = this.state.th_jarak;
         Settings.Save();
         this.resolveShow();
         this.close();
@@ -57,11 +59,12 @@ export default class ModalSettings extends React.Component{
                   <Row>
 
                       <Col xs={3}>
-
-                            <label>Tresshold:</label>
-                            <input type="number" class="form-control" step="0.1" value={this.state.tresshold}  onChange={e => this.setState({tresshold:e.target.value})}></input>
-                        
-                           
+                        <label>Tresshold Suhu:</label>
+                        <input type="number" class="form-control" step="0.1" value={this.state.th_suhu}  onChange={e => this.setState({th_suhu:e.target.value})}></input>
+                      </Col>
+                      <Col xs={3}>
+                        <label>Tresshold Jarak:</label>
+                        <input type="number" class="form-control" step="0.1" value={this.state.th_jarak}  onChange={e => this.setState({th_jarak:e.target.value})}></input>
                       </Col>
                   </Row>
                     
