@@ -39,7 +39,7 @@ class App extends Component {
       if (message.jarak <= this.state.jarak_tresshold){
         if (message.suhu >= this.state.suhu_tresshold){
           this.setState({ suhu: message.suhu}); 
-          this.modalAlert.show().then(()=>{});
+          this.modalAlert.show();
           this.setState({ alert_text: 'Suhu melewati tresshold',alert_text_color: 'red'}); 
         }else{
           this.modalAlert.close();

@@ -9,7 +9,7 @@ export default class AlertTresshold extends React.Component{
     }
     
     close = () => {
-        this.resolveShow();
+       
         this.setState({ show: false});
     }
   
