@@ -39,10 +39,10 @@ class App extends Component {
       if (message.jarak <= this.state.jarak_tresshold){
         if (message.suhu >= this.state.suhu_tresshold){
           this.setState({ suhu: message.suhu}); 
-          this.modalAlert.show();
+          this.modalAlert.show("Suhu tidak normal !!!","Suhu Tubuh " + message.suhu+"°",'danger');
           this.setState({ alert_text: 'Suhu melewati tresshold',alert_text_color: 'red'}); 
         }else{
-          this.modalAlert.close();
+          this.modalAlert.show("Suhu normal","Suhu Tubuh " + message.suhu+"°",'success');
           this.setState({ alert_text: ''}); 
         }
       }else{
@@ -100,7 +100,7 @@ class App extends Component {
         <AlertTresshold ref={r => this.modalAlert = r}  />
         
         <Container style={{display:'flex', alignItems:'center', justifyContent:'center',flexDirection: 'column', flex:1, height:'100%'}}>
-          <Card style={{margin:0, height:'50vh', width:'50vw' ,alignSelf: "center"}}>
+          <Card style={{margin:0, height:'70vh', width:'50vw' ,alignSelf: "center"}}>
             <Card.Header>
               Sensor Suhu Tubuh
             

@@ -6,7 +6,19 @@
   height: 40vmin;
   pointer-events: none;
 }
+.modal-dialog {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 20px);
 
+
+ 
+}
+.modal-content {
+  width: 100%;
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
