@@ -19,8 +19,8 @@ class ws:
                 print('aaaaaaaaaaaa')
 
     async def handler_sensor(self, websocket):
-        print ('Websocket sensor '+str(len(self.ws))+' connected')
         self.ws[websocket] = {}
+        print ('Websocket sensor '+str(len(self.ws))+' connected')
         try:
             while True:    
                 msg = await websocket.recv()        
