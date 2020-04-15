@@ -46,9 +46,10 @@ class App extends Component {
           this.setState({ alert_text: ''}); 
         }
       }else{
+        this.modalAlert.close();
         this.setState({ suhu: 33}); 
          this.setState({ alert_text: 'Mendekat',alert_text_color: 'blue',suhu: 33}); 
-      } 
+      }  
     }
 
     this.ws.onclose = (e) => {
