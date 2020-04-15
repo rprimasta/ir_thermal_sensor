@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import ModalSettings from './ModalSettings';
+import AlertTresshold from './AlertTresshold';
 import { Button,Container,Row,Col,Card,FormText } from 'react-bootstrap';
 import windowSize from 'react-window-size';
 import Thermometer from 'react-thermometer-component'
@@ -38,8 +39,10 @@ class App extends Component {
       if (message.jarak <= this.state.jarak_tresshold){
         if (message.suhu >= this.state.suhu_tresshold){
           this.setState({ suhu: message.suhu}); 
+          this.modalAlert.show();
           this.setState({ alert_text: 'Suhu melewati tresshold',alert_text_color: 'red'}); 
         }else{
+          this.modalAlert.close();
           this.setState({ alert_text: ''}); 
         }
       }else{
@@ -67,7 +70,7 @@ class App extends Component {
         speedoRender:true
       });
       setTimeout(function() {that.setState({speedoRender:false}); }, 1);
-     
+  
   }
   onModalSaved = ()=>{
   
@@ -76,8 +79,9 @@ class App extends Component {
   componentDidMount(){
     this.connect();
     this.loadToState();
+   
   
-  }
+  } 
   openModalSetting = ()=>{
     this.modalSetting.show().then(()=>{
       this.loadToState();
@@ -92,7 +96,8 @@ class App extends Component {
           
           
         <ModalSettings ref={r => this.modalSetting = r}  />
- 
+        <AlertTresshold ref={r => this.modalAlert = r}  />
+        
         <Container style={{display:'flex', alignItems:'center', justifyContent:'center',flexDirection: 'column', flex:1, height:'100%'}}>
           <Card style={{margin:0, height:'50vh', width:'50vw' ,alignSelf: "center"}}>
             <Card.Header>

@@ -1,10 +1,6 @@
 import React, { Component,useRef, useState  } from 'react';
 import { Button,Container,Row,Col,Card,FormText, Modal, Alert } from 'react-bootstrap';
-import windowSize from 'react-window-size';
-import Thermometer from 'react-thermometer-component'
-import ReactSpeedometer from "react-d3-speedometer";
-import Settings from '../Config'
-export default class ModalSettings extends React.Component{
+export default class AlertTresshold extends React.Component{
     constructor(props){
         super(props);
         this.state = { 
@@ -19,10 +15,11 @@ export default class ModalSettings extends React.Component{
   
     show = () => {
       return new Promise((resolve,reject)=>{
-          Settings.Load();
+      
+        this.setState({ 
+            show: true
+        });
           this.resolveShow = resolve;
-
-          
       });
      
     }
@@ -37,7 +34,7 @@ export default class ModalSettings extends React.Component{
               aria-labelledby="contained-modal-title"
             > 
               <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title">Edit Recipe</Modal.Title>
+                <Modal.Title id="contained-modal-title">Alert !!!</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <Alert variant="success">
@@ -56,8 +53,7 @@ export default class ModalSettings extends React.Component{
                     
               </Modal.Body>
               <Modal.Footer>
-                <Button bsStyle="primary" onClick={this.save}>Save</Button>
-                <Button onClick={this.close}>Close</Button>
+            
               </Modal.Footer>
             </Modal>
           </div>
