@@ -15,7 +15,10 @@ sonar = adafruit_hcsr04.HCSR04(trigger_pin=board.D18, echo_pin=board.D24)
 i2c = io.I2C(board.SCL, board.SDA, frequency=100000)
 mlx = adafruit_mlx90614.MLX90614(i2c)
 
-offs = 3.0
+offs = 5.0
+
+def regression(x):
+    return (0.007780088719)*(x**2) - 0.3911205209 * x + 4.757324014
 
 def randrange_float(start, stop, step):
     return random.randint(0, int((stop - start) / step)) * step + start
@@ -24,6 +27,8 @@ async def task_sensor():
     try:
         jarak = sonar.distance
         suhu = mlx.object_temperature + offs
+        if jarak <= 20:
+            suhu = suhu - regression(jarak)
         await sock.broadcast_message({'suhu':suhu, 'jarak':jarak})
     except RuntimeError:
         print("Retrying!")
@@ -38,7 +43,7 @@ sock = ws(8887)
 
 tasks = [
     asyncio.ensure_future(sock.listen()),
-    asyncio.ensure_future(run_forever_task(task_sensor,0.500)), #250 ms
+    asyncio.ensure_future(run_forever_task(task_sensor,0.200)), #250 ms
 ]
 
 asyncio.get_event_loop().run_until_complete(asyncio.wait(tasks))
