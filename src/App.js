@@ -26,6 +26,7 @@ class App extends Component {
     
   }
   alert_show = false
+  timer_dist = 0
   average = (elmt)=>{
     var sum = 0;
     for( var i = 0; i < elmt.length; i++ ){
@@ -51,10 +52,11 @@ class App extends Component {
       const that = this;
       let sampling_length = 4;
       if (message.jarak <= this.state.masuk_tresshold){
-      
+        this.timer_dist = 0;
         this.sampling_suhu.push(message.suhu);
         if (this.sampling_suhu.length >= sampling_length){     
             //pengukuran selesai, data akan dicompare 
+            
             var dataCompare = this.sampling_suhu[this.sampling_suhu.length-1];
           
             if (dataCompare >= Settings.Data.Treshold_Suhu){
@@ -88,9 +90,16 @@ class App extends Component {
         // if (this.sampling_suhu.length >= sampling_length){
           //objek baru saja keluar
             if (message.jarak >= Settings.Data.Treshold_Keluar){
-              this.sampling_suhu = [];
-              this.alert_show = false;
-              this.setState({ suhu: 33,flag_measuring: 1});  
+               setTimeout(function() {
+                  that.timer_dist++;
+                  if (that.timer_dist >= 3){
+                    that.timer_dist++;
+                    that.sampling_suhu = [];
+                    that.alert_show = false;
+                    that.setState({ suhu: 33,flag_measuring: 1});  
+                  }
+               }, 1000); 
+            
             }
         // }else{
         //   //belum ada objek untuk di kompare
