@@ -99,7 +99,7 @@ class App extends Component {
               that.timer_dist++;
                setTimeout(function() {
                   if (that.timer_dist >= 0){
-                    setTimeout(function() {that.ws.send(JSON.stringify({flag_lamp:1}));}, 10);
+                    setTimeout(function() {that.ws.send(JSON.stringify({flag_lamp:1}));}, 1500);
                     
                     that.timer_dist++;
                     that.sampling_suhu = [];
