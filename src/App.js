@@ -3,11 +3,12 @@ import logo from './logo.svg';
 import './App.css';
 import ModalSettings from './ModalSettings';
 import AlertTresshold from './AlertTresshold';
-import { Button,Container,Row,Col,Card,FormText, Spinner } from 'react-bootstrap';
+import { Button,Container,Row,Col,Card,FormText, Spinner, Alert } from 'react-bootstrap';
 import windowSize from 'react-window-size';
 import Thermometer from 'react-thermometer-component'
 import ReactSpeedometer from "react-d3-speedometer";
 import Settings from './Config';
+import { IoMdWarning,IoMdCheckmarkCircleOutline } from 'react-icons/io';
 
 class App extends Component {
   constructor(props){
@@ -46,7 +47,7 @@ class App extends Component {
     this.ws.onmessage = evt => {
       // on receiving a message, add it to the list of messages
       const message = JSON.parse(evt.data)
-      console.log(message);
+     // console.log(message);
       const that = this;
       let sampling_length = 4;
       if (message.jarak <= this.state.masuk_tresshold){
@@ -55,9 +56,11 @@ class App extends Component {
         if (this.sampling_suhu.length >= sampling_length){     
             //pengukuran selesai, data akan dicompare 
             var dataCompare = this.sampling_suhu[this.sampling_suhu.length-1];
-            if (dataCompare >= Settings.Data.Treshold_Masuk){
-  
+          
+            if (dataCompare >= Settings.Data.Treshold_Suhu){
+              //SUHU TIDAK NORMAL
               if (this.alert_show == false){
+              
                 this.alert_show = true;
                 setTimeout(function() {
                   that.setState({suhu: dataCompare,flag_measuring:4 }); 
@@ -66,6 +69,8 @@ class App extends Component {
               }
               
             }else{ 
+              //SUHU NORMAL 
+              
               if (this.alert_show == false){
                 this.alert_show = true;
                 setTimeout(function() {
@@ -140,12 +145,26 @@ class App extends Component {
           <Spinner animation="border" role="status">
             <span className="sr-only">Loading...</span>
           </Spinner>
-        </h4>
+        </h4> 
         );
     }else if (this.state.flag_measuring == 3){
-      return (<h4>Suhu nomral</h4>);
+      return (
+          <h4 style={{color:'green', textAlign:'center'}}>
+            Suhu Normal
+            <br/>
+          <IoMdWarning style={{fontSize:'4em'}}/> 
+
+          </h4>
+      );
     }else if (this.state.flag_measuring == 4){
-      return (<h4>Suhu Tidak nomral</h4>);
+      return (
+      <h4 style={{color:'red', textAlign:'center'}}>
+        Suhu Tidak Normal
+        <br/>
+      <IoMdWarning style={{fontSize:'4em'}}/> 
+
+      </h4>
+      );
     }
   }
   render(){
