@@ -37,7 +37,7 @@ class App extends Component {
     return avg;
   }
   last_flag = 0;
-  toRestart = 0;
+  toRestart =  null;
   sendLamp = (flag)=>{
     if (flag == this.last_flag) return;
     this.last_flag = flag;
