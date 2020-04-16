@@ -63,7 +63,8 @@ class App extends Component {
             if (dataCompare >= Settings.Data.Treshold_Suhu){
               //SUHU TIDAK NORMAL
               if (this.alert_show == false){
-                this.ws.send(JSON.stringify({flag_lamp:4}));
+                setTimeout(function() {that.ws.send(JSON.stringify({flag_lamp:4}));}, 10);
+               
                 this.alert_show = true;
                 setTimeout(function() {
                   that.setState({suhu: dataCompare,flag_measuring:4 }); 
@@ -75,7 +76,8 @@ class App extends Component {
               //SUHU NORMAL 
               
               if (this.alert_show == false){
-                this.ws.send(JSON.stringify({flag_lamp:3}));
+                
+                setTimeout(function() {that.ws.send(JSON.stringify({flag_lamp:3}));}, 10);
                 this.alert_show = true;
                 setTimeout(function() {
                   that.setState({suhu: dataCompare,flag_measuring:3 }); 
@@ -85,7 +87,8 @@ class App extends Component {
             } 
         }else{
           //sedang mengukur
-          this.ws.send(JSON.stringify({flag_lamp:2}));
+          setTimeout(function() {that.ws.send(JSON.stringify({flag_lamp:2}));}, 10);
+         
           this.setState({ flag_measuring: 2});  
         }
       }else{ 
@@ -96,7 +99,8 @@ class App extends Component {
               that.timer_dist++;
                setTimeout(function() {
                   if (that.timer_dist >= 0){
-                    that.ws.send(JSON.stringify({flag_lamp:1}));
+                    setTimeout(function() {that.ws.send(JSON.stringify({flag_lamp:1}));}, 10);
+                    
                     that.timer_dist++;
                     that.sampling_suhu = [];
                     that.alert_show = false;

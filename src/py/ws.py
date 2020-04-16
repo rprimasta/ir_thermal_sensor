@@ -25,10 +25,10 @@ class ws:
         try:
             while True:    
                 try:
-                msg = await websocket.recv() 
-                msg = json.loads(msg)
-                if (self.recvCallback != None):
-                    self.recvCallback(msg); 
+                    msg = await websocket.recv() 
+                    msg = json.loads(msg)
+                    if (self.recvCallback != None):
+                        self.recvCallback(msg); 
                 except Exception as e:
                     print(e)     
         except Exception as e:
