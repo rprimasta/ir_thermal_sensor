@@ -55,7 +55,7 @@ export default class ModalSettings extends React.Component{
               aria-labelledby="contained-modal-title"
             > 
               <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title">Edit Recipe</Modal.Title>
+                <Modal.Title id="contained-modal-title">Settings</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                   <Row>
