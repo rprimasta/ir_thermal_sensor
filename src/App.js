@@ -209,18 +209,18 @@ class App extends Component {
         <AlertTresshold ref={r => this.modalAlert = r}  />
         
         <Container style={{display:'flex', alignItems:'center', justifyContent:'center',flexDirection: 'column', flex:1, height:'100%'}}>
-          <Card style={{margin:0, height:'70vh', width:'65vw' ,alignSelf: "center"}}>
+          <Card style={{margin:0, height:'85vh', width:'65vw' ,alignSelf: "center"}}>
             <Card.Header>
               Sensor Suhu Tubuh
             
               <Button onClick={this.openModalSetting } style={{float:'right'}}>Settings</Button>
-            </Card.Header>
+            </Card.Header> 
             <Card.Body>  
                 <Container style={{justifyContent:'center',display:'flex', alignItems:'center',flexDirection: 'column'}}>
                             <Row className="justify-content-md-center">
                               {
                                   this.showMessage()    
-                              }
+                              } 
                             </Row>
                             <Row className="justify-content-md-center">
                               <Col xs={12} style={{justifyContent:'center',display:'flex',alignItems:'center',flexDirection: 'column'}}>
