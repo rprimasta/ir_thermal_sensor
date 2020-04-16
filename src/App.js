@@ -43,7 +43,7 @@ class App extends Component {
     this.ws.onopen = () => {
       // on connecting, do nothing but log it to the console
       console.log('connected');
-      this.ws.send(JSON.stringify({flag_lamp:1}));
+      // this.ws.send(JSON.stringify({flag_lamp:1}));
     }
 
     this.ws.onmessage = evt => {
