@@ -235,18 +235,11 @@ class App extends Component {
                                 customSegmentStops={[33,this.state.suhu_tresshold, 43]}
                               />
                             </Row>
-                            {/* <Row className="justify-content-center">
-                              <h4 style={{color:this.state.alert_text_color}}>{this.state.alert_text}</h4>
-                            </Row>  */}
-                          {/* <Thermometer 
-                          theme="light"
-                          value="18"
-                          max="100"
-                          steps="2"
-                          format="°C"
-                          size="normal"
-                          />                                               */}
-                </Container>
+                             <Row className="justify-content-center text-center" >
+                            <h4 style={{fontSize:'3em'}}>{this.state.suhu}°C</h4>
+                            </Row>  
+                        
+                </Container> 
             </Card.Body>
           </Card>
           
