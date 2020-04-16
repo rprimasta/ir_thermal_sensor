@@ -20,7 +20,8 @@ class App extends Component {
       speedoRender: false,
       alert_text:'',
       alert_text_color:'red',
-      flag_measuring:1
+      flag_measuring:1,
+      suhu_result:'-'
     };
     Settings.Load();
     
@@ -76,7 +77,7 @@ class App extends Component {
                 this.alert_show = true;
                 setTimeout(function() {
                   that.sendLamp(4);
-                  that.setState({suhu: dataCompare,flag_measuring:4 }); 
+                  that.setState({suhu_result:dataCompare.toFixed(2) + '°C',suhu: dataCompare,flag_measuring:4 }); 
                   //that.modalAlert.show("Suhu tidak normal !!!","Suhu Tubuh " + dataCompare+"°",'danger'); 
                 }, 1000);
               }
@@ -85,12 +86,10 @@ class App extends Component {
               //SUHU NORMAL 
               
               if (this.alert_show == false){
-                
-               
                 this.alert_show = true;
                 setTimeout(function() {
                   that.sendLamp(3);
-                  that.setState({suhu: dataCompare,flag_measuring:3 }); 
+                  that.setState({suhu_result:dataCompare.toFixed(2) + '°C', suhu: dataCompare,flag_measuring:3 }); 
                  }, 1000); 
               } 
             
@@ -116,7 +115,7 @@ class App extends Component {
                     that.timer_dist++;
                     that.sampling_suhu = [];
                     that.alert_show = false;
-                    that.setState({ suhu: 33,flag_measuring: 1});  
+                    that.setState({suhu_result:'-', suhu: 33,flag_measuring: 1});  
                   }
                }, 4000); 
               }
@@ -224,20 +223,22 @@ class App extends Component {
                               }
                             </Row>
                             <Row className="justify-content-md-center">
-                              <ReactSpeedometer 
-                                width={500}
-                                minValue={33}
-                                maxValue={43}
-                                segments={2}
-                                value={this.state.suhu}
-                                segmentColors={["green", "red"]}
-                                forceRender={this.state.speedoRender}
-                                customSegmentStops={[33,this.state.suhu_tresshold, 43]}
-                              />
+                              <Col xs={12} style={{justifyContent:'center',display:'flex',alignItems:'center',flexDirection: 'column'}}>
+                                <ReactSpeedometer 
+                                  style={{textAlign:'center'}}
+                                  width={500}
+                                  minValue={33}
+                                  maxValue={43}
+                                  segments={2}
+                                  value={this.state.suhu}
+                                  segmentColors={["green", "red"]}
+                                  forceRender={this.state.speedoRender}
+                                  customSegmentStops={[33,this.state.suhu_tresshold, 43]}
+                                />
+                                 <h4 style={{fontSize:'3em', textAlign:'center'}}>{this.state.suhu_result}</h4>
+                              </Col>
                             </Row>
-                             <Row className="justify-content-center text-center" >
-                            <h4 style={{fontSize:'3em'}}>{this.state.suhu}°C</h4>
-                            </Row>  
+                            
                         
                 </Container> 
             </Card.Body>
