@@ -36,6 +36,12 @@ class App extends Component {
     var avg = sum/elmt.length;
     return avg;
   }
+  last_flag = 0;
+  sendLamp = (flag)=>{
+    if (flag == this.last_flag) return;
+    this.last_flag = flag;
+    this.ws.send(JSON.stringify({flag_lamp:flag}));
+  }
   connect = ()=>{
     this.sampling_suhu = [];
     const that = this
@@ -63,7 +69,8 @@ class App extends Component {
             if (dataCompare >= Settings.Data.Treshold_Suhu){
               //SUHU TIDAK NORMAL
               if (this.alert_show == false){
-                setTimeout(function() {that.ws.send(JSON.stringify({flag_lamp:4}));}, 10);
+                this.sendLamp(4);
+        
                
                 this.alert_show = true;
                 setTimeout(function() {
@@ -77,7 +84,7 @@ class App extends Component {
               
               if (this.alert_show == false){
                 
-                setTimeout(function() {that.ws.send(JSON.stringify({flag_lamp:3}));}, 10);
+                this.sendLamp(3);
                 this.alert_show = true;
                 setTimeout(function() {
                   that.setState({suhu: dataCompare,flag_measuring:3 }); 
@@ -99,7 +106,8 @@ class App extends Component {
               that.timer_dist++;
                setTimeout(function() {
                   if (that.timer_dist >= 0){
-                    setTimeout(function() {that.ws.send(JSON.stringify({flag_lamp:1}));}, 1500);
+                    that.sendLamp(1);
+                    
                     
                     that.timer_dist++;
                     that.sampling_suhu = [];
