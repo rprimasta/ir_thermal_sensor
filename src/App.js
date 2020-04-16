@@ -95,7 +95,7 @@ class App extends Component {
         
         // if (this.sampling_suhu.length >= sampling_length){
           //objek baru saja keluar
-            if (message.jarak >= Settings.Data.Treshold_Keluar){
+            if (message.jarak >= Settings.Data.Treshold_Keluar && this.alert_show == true){
               that.timer_dist++;
                setTimeout(function() {
                   if (that.timer_dist >= 0){
