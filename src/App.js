@@ -47,7 +47,7 @@ class App extends Component {
     this.ws.onmessage = evt => {
       // on receiving a message, add it to the list of messages
       const message = JSON.parse(evt.data)
-     // console.log(message);
+      console.log(message);
       const that = this;
       let sampling_length = 4;
       if (message.jarak <= this.state.masuk_tresshold){
@@ -78,7 +78,7 @@ class App extends Component {
                  }, 1000); 
               } 
             
-            }
+            } 
         }else{
           //sedang mengukur
           this.setState({ flag_measuring: 2});  
