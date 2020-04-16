@@ -37,6 +37,7 @@ class App extends Component {
     return avg;
   }
   last_flag = 0;
+  toRestart = 0;
   sendLamp = (flag)=>{
     if (flag == this.last_flag) return;
     this.last_flag = flag;
@@ -106,17 +107,20 @@ class App extends Component {
           //objek baru saja keluar
             if (message.jarak >= Settings.Data.Treshold_Keluar && this.alert_show == true){
               that.timer_dist++;
-               setTimeout(function() {
+              if (this.toRestart == null){
+                this.toRestart = setTimeout(function() {
                   if (that.timer_dist >= 0){
                     that.sendLamp(1);
                     
-                    
+                    that.toRestart = null;
                     that.timer_dist++;
                     that.sampling_suhu = [];
                     that.alert_show = false;
                     that.setState({ suhu: 33,flag_measuring: 1});  
                   }
                }, 4000); 
+              }
+               
             
             }
         // }else{
