@@ -87,7 +87,7 @@ class App extends Component {
             } 
         }else{
           //sedang mengukur
-          setTimeout(function() {that.ws.send(JSON.stringify({flag_lamp:2}));}, 10);
+          // setTimeout(function() {that.ws.send(JSON.stringify({flag_lamp:2}));}, 10);
          
           this.setState({ flag_measuring: 2});  
         }
