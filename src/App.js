@@ -42,7 +42,8 @@ class App extends Component {
     this.ws = new WebSocket('ws://localhost:8887/sensor');
     this.ws.onopen = () => {
       // on connecting, do nothing but log it to the console
-      console.log('connected')
+      console.log('connected');
+      this.ws.send(JSON.stringify({flag_lamp:1}));
     }
 
     this.ws.onmessage = evt => {
@@ -62,7 +63,7 @@ class App extends Component {
             if (dataCompare >= Settings.Data.Treshold_Suhu){
               //SUHU TIDAK NORMAL
               if (this.alert_show == false){
-              
+                this.ws.send(JSON.stringify({flag_lamp:4}));
                 this.alert_show = true;
                 setTimeout(function() {
                   that.setState({suhu: dataCompare,flag_measuring:4 }); 
@@ -74,6 +75,7 @@ class App extends Component {
               //SUHU NORMAL 
               
               if (this.alert_show == false){
+                this.ws.send(JSON.stringify({flag_lamp:3}));
                 this.alert_show = true;
                 setTimeout(function() {
                   that.setState({suhu: dataCompare,flag_measuring:3 }); 
@@ -83,6 +85,7 @@ class App extends Component {
             } 
         }else{
           //sedang mengukur
+          this.ws.send(JSON.stringify({flag_lamp:2}));
           this.setState({ flag_measuring: 2});  
         }
       }else{ 
@@ -93,6 +96,7 @@ class App extends Component {
               that.timer_dist++;
                setTimeout(function() {
                   if (that.timer_dist >= 0){
+                    this.ws.send(JSON.stringify({flag_lamp:1}));
                     that.timer_dist++;
                     that.sampling_suhu = [];
                     that.alert_show = false;

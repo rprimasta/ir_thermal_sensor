@@ -7,9 +7,10 @@ import websockets
 import json
 import re
 class ws:
-    def __init__(self,port):
+    def __init__(self,port,recvCallback = None):
         self.port = port
         self.ws = {}
+        self.recvCallback = recvCallback
     
     async def broadcast_message(self, msg):
         for websocket, data in self.ws.items():
@@ -23,7 +24,13 @@ class ws:
         print ('Websocket sensor '+str(len(self.ws))+' connected')
         try:
             while True:    
-                msg = await websocket.recv()        
+                try:
+                msg = await websocket.recv() 
+                msg = json.loads(msg)
+                if (self.recvCallback != None):
+                    self.recvCallback(msg); 
+                except Exception as e:
+                    print(e)     
         except Exception as e:
             print(e)
         finally:
