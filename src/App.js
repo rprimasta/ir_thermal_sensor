@@ -92,7 +92,7 @@ class App extends Component {
             if (message.jarak >= Settings.Data.Treshold_Keluar){
               that.timer_dist++;
                setTimeout(function() {
-                  if (that.timer_dist >-0){
+                  if (that.timer_dist >= 0){
                     that.timer_dist++;
                     that.sampling_suhu = [];
                     that.alert_show = false;
