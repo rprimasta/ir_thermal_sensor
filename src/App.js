@@ -230,6 +230,7 @@ class App extends Component {
                                   minValue={33}
                                   maxValue={43}
                                   segments={2}
+                                  currentValueText={' '}
                                   value={this.state.suhu}
                                   segmentColors={["green", "red"]}
                                   forceRender={this.state.speedoRender}
