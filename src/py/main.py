@@ -15,16 +15,16 @@ sonar = adafruit_hcsr04.HCSR04(trigger_pin=board.D18, echo_pin=board.D24)
 i2c = io.I2C(board.SCL, board.SDA, frequency=100000)
 mlx = adafruit_mlx90614.MLX90614(i2c)
 
-offs = 3.
+offs = 3.0
 
 def randrange_float(start, stop, step):
     return random.randint(0, int((stop - start) / step)) * step + start
 
 async def task_sensor():
     try:
-    	jarak = sonal.distance + offs
-    	suhu = mlx.object_temperature
-    	await sock.broadcast_message({'suhu':suhu, 'jarak':jarak})
+        jarak = sonar.distance
+        suhu = mlx.object_temperature + offs
+        await sock.broadcast_message({'suhu':suhu, 'jarak':jarak})
     except RuntimeError:
         print("Retrying!")
 
