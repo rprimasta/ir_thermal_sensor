@@ -69,11 +69,12 @@ class App extends Component {
             if (dataCompare >= Settings.Data.Treshold_Suhu){
               //SUHU TIDAK NORMAL
               if (this.alert_show == false){
-                this.sendLamp(4);
+               
         
                
                 this.alert_show = true;
                 setTimeout(function() {
+                  that.sendLamp(4);
                   that.setState({suhu: dataCompare,flag_measuring:4 }); 
                   //that.modalAlert.show("Suhu tidak normal !!!","Suhu Tubuh " + dataCompare+"°",'danger'); 
                 }, 1000);
@@ -84,9 +85,10 @@ class App extends Component {
               
               if (this.alert_show == false){
                 
-                this.sendLamp(3);
+               
                 this.alert_show = true;
                 setTimeout(function() {
+                  that.sendLamp(3);
                   that.setState({suhu: dataCompare,flag_measuring:3 }); 
                  }, 1000); 
               } 
