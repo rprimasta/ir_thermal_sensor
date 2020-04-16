@@ -85,16 +85,16 @@ class App extends Component {
         }
       }else{ 
         
-        if (this.sampling_suhu.length >= sampling_length){
+        // if (this.sampling_suhu.length >= sampling_length){
           //objek baru saja keluar
             if (message.jarak >= Settings.Data.Treshold_Keluar){
               this.sampling_suhu = [];
               this.alert_show = false;
               this.setState({ suhu: 33,flag_measuring: 1});  
             }
-        }else{
-          //belum ada objek untuk di kompare
-        }
+        // }else{
+        //   //belum ada objek untuk di kompare
+        // }
 
        
         //  this.setState({ alert_text: 'Mendekat',alert_text_color: 'blue',suhu: 33}); 
