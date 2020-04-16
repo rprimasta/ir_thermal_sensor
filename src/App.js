@@ -90,15 +90,15 @@ class App extends Component {
         // if (this.sampling_suhu.length >= sampling_length){
           //objek baru saja keluar
             if (message.jarak >= Settings.Data.Treshold_Keluar){
+              that.timer_dist++;
                setTimeout(function() {
-                  that.timer_dist++;
-                  if (that.timer_dist >= 3){
+                  if (that.timer_dist >-0){
                     that.timer_dist++;
                     that.sampling_suhu = [];
                     that.alert_show = false;
                     that.setState({ suhu: 33,flag_measuring: 1});  
                   }
-               }, 1000); 
+               }, 4000); 
             
             }
         // }else{
