@@ -29,7 +29,8 @@ export default class ModalSettings extends React.Component{
           this.setState({ 
               show: true,
               th_suhu:Settings.Data.Treshold_Suhu,
-              th_jarak:Settings.Data.Treshold_Jarak
+              th_masuk:Settings.Data.Treshold_Masuk,
+              th_keluar:Settings.Data.Treshold_Keluar
           });
           this.resolveShow = resolve;
       });
@@ -37,7 +38,8 @@ export default class ModalSettings extends React.Component{
     }
     save= ()=>{
         Settings.Data.Treshold_Suhu = this.state.th_suhu;
-        Settings.Data.Treshold_Jarak = this.state.th_jarak;
+        Settings.Data.Treshold_Masuk = this.state.th_masuk;
+        Settings.Data.Treshold_Keluar = this.state.th_keluar;
         Settings.Save();
         this.resolveShow();
         this.close();
@@ -63,8 +65,12 @@ export default class ModalSettings extends React.Component{
                         <input type="number" class="form-control" step="0.1" value={this.state.th_suhu}  onChange={e => this.setState({th_suhu:e.target.value})}></input>
                       </Col>
                       <Col xs={3}>
-                        <label>Tresshold Jarak:</label>
-                        <input type="number" class="form-control" step="0.1" value={this.state.th_jarak}  onChange={e => this.setState({th_jarak:e.target.value})}></input>
+                        <label>Tresshold Masuk:</label>
+                        <input type="number" class="form-control" step="0.1" value={this.state.th_masuk}  onChange={e => this.setState({th_masuk:e.target.value})}></input>
+                      </Col>
+                      <Col xs={3}>
+                        <label>Tresshold Keluar:</label>
+                        <input type="number" class="form-control" step="0.1" value={this.state.th_keluar}  onChange={e => this.setState({th_keluar:e.target.value})}></input>
                       </Col>
                   </Row>
                     

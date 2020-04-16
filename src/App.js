@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import ModalSettings from './ModalSettings';
 import AlertTresshold from './AlertTresshold';
-import { Button,Container,Row,Col,Card,FormText } from 'react-bootstrap';
+import { Button,Container,Row,Col,Card,FormText, Spinner } from 'react-bootstrap';
 import windowSize from 'react-window-size';
 import Thermometer from 'react-thermometer-component'
 import ReactSpeedometer from "react-d3-speedometer";
@@ -18,7 +18,8 @@ class App extends Component {
       suhu_tresshold:37.5,
       speedoRender: false,
       alert_text:'',
-      alert_text_color:'red'
+      alert_text_color:'red',
+      flag_measuring:1
     };
     Settings.Load();
     
@@ -47,41 +48,51 @@ class App extends Component {
       const message = JSON.parse(evt.data)
       console.log(message);
       const that = this;
-      if (message.jarak <= this.state.jarak_tresshold){
+      let sampling_length = 4;
+      if (message.jarak <= this.state.masuk_tresshold){
+      
         this.sampling_suhu.push(message.suhu);
-        this.setState({suhu: message.suhu}); 
-        if (this.sampling_suhu.length == 4 && this.alert_show == false){
+        if (this.sampling_suhu.length >= sampling_length){     
+            //pengukuran selesai, data akan dicompare 
             var dataCompare = this.sampling_suhu[this.sampling_suhu.length-1];
-            if (dataCompare >= this.state.suhu_tresshold){
-              this.sampling_suhu = [];
-              // setTimeout(function() {that.sampling_suhu = [] }, 10000);
-              this.alert_show = true;
-              this.setState({ suhu: message.suhu, alert_text: 'Suhu melewati tresshold',alert_text_color: 'red'}); 
-              setTimeout(function() {that.modalAlert.show("Suhu tidak normal !!!","Suhu Tubuh " + dataCompare+"°",'danger'); }, 1000);
-            }else{
-              this.sampling_suhu = [];
-              this.alert_show = true;
-              this.setState({alert_show:true, alert_text: '', suhu: message.suhu}); 
-              // setTimeout(function() {that.sampling_suhu = [] }, 5000);
-              setTimeout(function() {that.modalAlert.show("Suhu normal","Suhu Tubuh " + dataCompare+"°",'success'); }, 1000);
-            }
-        }
-       
-      }else{ 
-        //setTimeout(function() {that.sampling_suhu = [] }, 1000);
-        if (this.alert_show == true){
-            if (message.jarak >= 50){
-              this.modalAlert.close();
-              this.alert_show = false;
-            }
-        }
+            if (dataCompare >= Settings.Data.Treshold_Masuk){
+  
+              if (this.alert_show == false){
+                this.alert_show = true;
+                setTimeout(function() {
+                  that.setState({suhu: dataCompare,flag_measuring:4 }); 
+                  //that.modalAlert.show("Suhu tidak normal !!!","Suhu Tubuh " + dataCompare+"°",'danger'); 
+                }, 1000);
+              }
+              
+            }else{ 
+              if (this.alert_show == false){
+                this.alert_show = true;
+                setTimeout(function() {
+                  that.setState({suhu: dataCompare,flag_measuring:3 }); 
+                 }, 1000); 
+              } 
             
+            }
+        }else{
+          //sedang mengukur
+          this.setState({ flag_measuring: 2});  
+        }
+      }else{ 
         
-        
-        this.sampling_suhu = [];
-        
-        this.setState({ suhu: 33}); 
-         this.setState({ alert_text: 'Mendekat',alert_text_color: 'blue',suhu: 33}); 
+        if (this.sampling_suhu.length >= sampling_length){
+          //objek baru saja keluar
+            if (message.jarak >= Settings.Data.Treshold_Keluar){
+              this.sampling_suhu = [];
+              this.alert_show = false;
+              this.setState({ suhu: 33,flag_measuring: 1});  
+            }
+        }else{
+          //belum ada objek untuk di kompare
+        }
+
+       
+        //  this.setState({ alert_text: 'Mendekat',alert_text_color: 'blue',suhu: 33}); 
       }  
     }
 
@@ -100,7 +111,8 @@ class App extends Component {
     this.setState(
       {
         suhu_tresshold:Settings.Data.Treshold_Suhu,
-        jarak_tresshold:Settings.Data.Treshold_Jarak,
+        masuk_tresshold:Settings.Data.Treshold_Masuk,
+        keluar_tresshold:Settings.Data.Treshold_Keluar,
         speedoRender:true
       });
       setTimeout(function() {that.setState({speedoRender:false}); }, 1);
@@ -121,6 +133,21 @@ class App extends Component {
       this.loadToState();
     })
   }
+  showMessage=()=>{
+    if (this.state.flag_measuring == 2){
+        return (
+        <h4 style={{textAlign:'center'}}>Please Wait<br></br>
+          <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+        </h4>
+        );
+    }else if (this.state.flag_measuring == 3){
+      return (<h4>Suhu nomral</h4>);
+    }else if (this.state.flag_measuring == 4){
+      return (<h4>Suhu Tidak nomral</h4>);
+    }
+  }
   render(){
 
     return (
@@ -140,9 +167,11 @@ class App extends Component {
               <Button onClick={this.openModalSetting } style={{float:'right'}}>Settings</Button>
             </Card.Header>
             <Card.Body>  
-                <Container style={{justifyContent:'center'}}>
+                <Container style={{justifyContent:'center',display:'flex', alignItems:'center',flexDirection: 'column'}}>
                             <Row className="justify-content-md-center">
-                            <h4>Suhu Badan: {this.state.suhu}°</h4>
+                              {
+                                  this.showMessage()    
+                              }
                             </Row>
                             <Row className="justify-content-md-center">
                               <ReactSpeedometer 
@@ -156,9 +185,9 @@ class App extends Component {
                                 customSegmentStops={[33,this.state.suhu_tresshold, 43]}
                               />
                             </Row>
-                            <Row className="justify-content-center">
+                            {/* <Row className="justify-content-center">
                               <h4 style={{color:this.state.alert_text_color}}>{this.state.alert_text}</h4>
-                            </Row> 
+                            </Row>  */}
                           {/* <Thermometer 
                           theme="light"
                           value="18"

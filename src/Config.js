@@ -1,7 +1,8 @@
 const Settings = {
     Data:{
         Treshold_Suhu : 37,
-        Treshold_Jarak : 8
+        Treshold_Masuk : 8,
+        Treshold_Keluar : 60
     },
     Save: ()=>{
        
