@@ -19,6 +19,10 @@ lamp_red.direction = Direction.OUTPUT
 buzzer = DigitalInOut(board.D17)
 buzzer.direction = Direction.OUTPUT
 
+lamp_green.value = True
+lamp_yellow.value = False
+lamp_red.value = True
+
 sonar = adafruit_hcsr04.HCSR04(trigger_pin=board.D18, echo_pin=board.D24)
 # the mlx90614 must be run at 100k [normal speed]
 # i2c default mode is is 400k [full speed]
@@ -51,22 +55,32 @@ async def recv_callback(data):
     print (data)
     if (data['flag_lamp'] == 1):
         print('idle')
-        #idle
+        lamp_green.value = True
+        lamp_yellow.value = False
+        lamp_red.value = True
     elif (data['flag_lamp'] == 2):
         print('please wait')
-	    #please wait
+	#please wait
     elif (data['flag_lamp'] == 3):
         print('normal')
+        lamp_green.value = False
+        lamp_yellow.value = True
+        lamp_red.value = True
         buzzer.value=True
         await asyncio.sleep(1)
         buzzer.value=False
-	    #suhu normal
+	    # #suhu normal
     elif (data['flag_lamp'] == 4):
         print('tidak normal')
-        buzzer.value=True
-        await asyncio.sleep(1)
-        buzzer.value=False
-	    #suhu tidak normal
+        lamp_green.value = True
+        lamp_yellow.value = True
+        lamp_red.value = False
+        for c in range(0,5):
+            buzzer.value=True
+            await asyncio.sleep(1)
+            buzzer.value=False
+            await asyncio.sleep(1)
+	# #suhu tidak normal
 async def run_forever_task(task,sleep):
     while True:
         await task()
@@ -76,7 +90,7 @@ sock = ws(8887,recv_callback)
 
 tasks = [
     asyncio.ensure_future(sock.listen()),
-    asyncio.ensure_future(run_forever_task(task_sensor,0.200)), #250 ms
+    asyncio.ensure_future(run_forever_task(task_sensor,0.500)), #250 ms
 ]
 
 asyncio.get_event_loop().run_until_complete(asyncio.wait(tasks))
