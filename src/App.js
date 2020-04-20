@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import ModalSettings from './ModalSettings';
 import AlertTresshold from './AlertTresshold';
@@ -9,7 +8,7 @@ import Thermometer from 'react-thermometer-component'
 import ReactSpeedometer from "react-d3-speedometer";
 import Settings from './Config';
 import { IoMdWarning,IoMdCheckmarkCircleOutline } from 'react-icons/io';
-
+import logo from './logo.png';
 class App extends Component {
   constructor(props){
     super(props);
@@ -76,7 +75,7 @@ class App extends Component {
                   that.sendLamp(4);
                   that.setState({suhu_result:dataCompare.toFixed(2) + '°C',suhu: dataCompare,flag_measuring:4 }); 
                   //that.modalAlert.show("Suhu tidak normal !!!","Suhu Tubuh " + dataCompare+"°",'danger'); 
-                }, 1000);
+                }, 300);
               }
               
             }else{ 
@@ -87,7 +86,7 @@ class App extends Component {
                 setTimeout(function() {
                   that.sendLamp(3);
                   that.setState({suhu_result:dataCompare.toFixed(2) + '°C', suhu: dataCompare,flag_measuring:3 }); 
-                 }, 1000); 
+                 }, 300); 
               } 
             
             } 
@@ -112,7 +111,7 @@ class App extends Component {
                     that.timer_dist++;
                     that.sampling_suhu = [];
                     that.alert_show = false;
-                    that.setState({suhu_result:'-', suhu: 33,flag_measuring: 1});  
+                    that.setState({suhu_result:'-', suhu: 0,flag_measuring: 1});  
                   }
                }, 4000); 
               }
@@ -166,6 +165,12 @@ class App extends Component {
     })
   }
   showMessage=()=>{
+    return (      <h4 style={{color:'red', textAlign:'center'}}>
+    Suhu Tidak Normal
+    <br/>
+  <IoMdWarning style={{fontSize:'2em'}}/> 
+
+  </h4> )
     if (this.state.flag_measuring == 2){
         return (
         <h4 style={{textAlign:'center'}}>Please Wait<br></br>
@@ -214,28 +219,29 @@ class App extends Component {
             </Card.Header> 
             <Card.Body>  
                 <Container style={{justifyContent:'center',display:'flex', alignItems:'center',flexDirection: 'column'}}>
-                            <Row className="justify-content-md-center" style={{height:80}}>
-                              {
-                                  this.showMessage()    
-                              } 
-                            </Row>
-                            <Row className="justify-content-md-center">
-                              <Col xs={12} style={{justifyContent:'center',display:'flex',alignItems:'center',flexDirection: 'column'}}>
-                                <ReactSpeedometer 
-                                  style={{textAlign:'center'}}
-                                  width={500}
-                                  minValue={33}
-                                  maxValue={50}
-                                  segments={2}
-                                  currentValueText={' '}
-                                  value={this.state.suhu}
-                                  segmentColors={["green", "red"]}
-                                  forceRender={this.state.speedoRender}
-                                  customSegmentStops={[33,this.state.suhu_tresshold, 50]}
-                                />
-                                 <h4 style={{fontSize:'3em', textAlign:'center'}}>{this.state.suhu_result}</h4>
-                              </Col>
-                            </Row>
+                  <img style={{ width:'15vw', height:'22vh', position:"absolute",left:15, top:75}}  src={logo} alt="Logo" />
+                  <Row className="justify-content-md-center" style={{height:80}}>
+                    {
+                        this.showMessage()    
+                    } 
+                  </Row>
+                  <Row className="justify-content-md-center">
+                    <Col xs={12} style={{justifyContent:'center',display:'flex',alignItems:'center',flexDirection: 'column'}}>
+                      <ReactSpeedometer 
+                        style={{textAlign:'center'}}
+                        width={500}
+                        minValue={0}
+                        maxValue={50}
+                        segments={2}
+                        currentValueText={' '}
+                        value={this.state.suhu}
+                        segmentColors={["green", "red"]}
+                        forceRender={this.state.speedoRender}
+                        customSegmentStops={[0,this.state.suhu_tresshold, 50]}
+                      />
+                        <h4 style={{fontSize:'3em', textAlign:'center'}}>{this.state.suhu_result}</h4>
+                    </Col>
+                  </Row>
                             
                         
                 </Container> 
