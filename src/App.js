@@ -71,9 +71,6 @@ class App extends Component {
             if (dataCompare >= Settings.Data.Treshold_Suhu){
               //SUHU TIDAK NORMAL
               if (this.alert_show == false){
-               
-        
-               
                 this.alert_show = true;
                 setTimeout(function() {
                   that.sendLamp(4);
@@ -217,7 +214,7 @@ class App extends Component {
             </Card.Header> 
             <Card.Body>  
                 <Container style={{justifyContent:'center',display:'flex', alignItems:'center',flexDirection: 'column'}}>
-                            <Row className="justify-content-md-center">
+                            <Row className="justify-content-md-center" style={{height:80}}>
                               {
                                   this.showMessage()    
                               } 
@@ -228,13 +225,13 @@ class App extends Component {
                                   style={{textAlign:'center'}}
                                   width={500}
                                   minValue={33}
-                                  maxValue={43}
+                                  maxValue={50}
                                   segments={2}
                                   currentValueText={' '}
                                   value={this.state.suhu}
                                   segmentColors={["green", "red"]}
                                   forceRender={this.state.speedoRender}
-                                  customSegmentStops={[33,this.state.suhu_tresshold, 43]}
+                                  customSegmentStops={[33,this.state.suhu_tresshold, 50]}
                                 />
                                  <h4 style={{fontSize:'3em', textAlign:'center'}}>{this.state.suhu_result}</h4>
                               </Col>
