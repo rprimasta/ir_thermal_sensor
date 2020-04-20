@@ -179,7 +179,7 @@ class App extends Component {
           <h4 style={{color:'green', textAlign:'center'}}>
             Suhu Normal
             <br/>
-          <IoMdWarning style={{fontSize:'4em'}}/> 
+          <IoMdWarning style={{fontSize:'2em'}}/> 
 
           </h4>
       );
@@ -188,7 +188,7 @@ class App extends Component {
       <h4 style={{color:'red', textAlign:'center'}}>
         Suhu Tidak Normal
         <br/>
-      <IoMdWarning style={{fontSize:'4em'}}/> 
+      <IoMdWarning style={{fontSize:'2em'}}/> 
 
       </h4>
       );
