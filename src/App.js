@@ -165,12 +165,6 @@ class App extends Component {
     })
   }
   showMessage=()=>{
-    return (      <h4 style={{color:'red', textAlign:'center'}}>
-    Suhu Tidak Normal
-    <br/>
-  <IoMdWarning style={{fontSize:'2em'}}/> 
-
-  </h4> )
     if (this.state.flag_measuring == 2){
         return (
         <h4 style={{textAlign:'center'}}>Please Wait<br></br>
