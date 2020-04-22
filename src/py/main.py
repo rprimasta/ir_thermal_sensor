@@ -48,7 +48,9 @@ async def task_sensor():
         
         await sock.broadcast_message({'suhu':suhu, 'jarak':jarak})
     
-    except RuntimeError:
+    except Exception as e:
+        s = str(e)
+        await sock.broadcast_message({'suhu':0, 'jarak':100, 'msgError':s})
         print("Retrying!")
 
 async def recv_callback(data):
