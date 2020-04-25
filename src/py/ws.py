@@ -24,8 +24,8 @@ class ws:
         print ('Websocket sensor '+str(len(self.ws))+' connected')
         try:
             while True:    
+                msg = await websocket.recv() 
                 try:
-                    msg = await websocket.recv() 
                     msg = json.loads(msg)
                     if (self.recvCallback != None):
                         await self.recvCallback(msg); 
