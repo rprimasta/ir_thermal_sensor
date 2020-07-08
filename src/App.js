@@ -116,7 +116,7 @@ class App extends Component {
                     that.alert_show = false;
                     that.setState({suhu_result:'-', suhu: 0,flag_measuring: 1});  
                   }
-               }, 4000); 
+               }, 2000); 
               }
                
             
