@@ -23,7 +23,9 @@ class App extends Component {
       suhu_result:'-'
     };
     Settings.Load();
-    
+    // that.sendLamp(1);
+               
+  
   }
   alert_show = false
   timer_dist = 0
@@ -145,8 +147,13 @@ class App extends Component {
         suhu_tresshold:Settings.Data.Treshold_Suhu,
         masuk_tresshold:Settings.Data.Treshold_Masuk,
         keluar_tresshold:Settings.Data.Treshold_Keluar,
-        speedoRender:true
+        speedoRender:true,
+        suhu_result:'-', 
+        suhu: 0,
+        flag_measuring: 1
       });
+      that.toRestart = null;
+      that.sampling_suhu = [];
       setTimeout(function() {that.setState({speedoRender:false}); }, 1);
   
   }
