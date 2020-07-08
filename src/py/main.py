@@ -31,7 +31,7 @@ i2c = io.I2C(board.SCL, board.SDA, frequency=100000)
 mlx = adafruit_mlx90614.MLX90614(i2c)
 
 # offs = 5.5
-offs = 3
+offs = 2.5
 
 def regression(x):
     return (0.007780088719)*(x**2) - 0.3911205209 * x + 4.757324014

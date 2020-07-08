@@ -30,8 +30,14 @@ class App extends Component {
   alert_show = false
   timer_dist = 0
   average = (elmt)=>{
-    var av = elmt => elmt.reduce( ( p, c ) => p + c, 0 ) / elmt.length;
-    return av;
+    var total = 0;
+    for(var i = 0; i < elmt.length; i++) {
+        total += elmt[i];
+    }
+    var avg = total / elmt.length;
+    return avg;
+    // var av = elmt => elmt.reduce( ( p, c ) => p + c, 0 ) / elmt.length;
+    // return av;
     // var sum = 0;
     // for( var i = 0; i < elmt.length; i++ ){
     //     sum += parseInt( elmt[i], 10 ); //don't forget to add the base
