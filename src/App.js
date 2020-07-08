@@ -68,7 +68,7 @@ class App extends Component {
             //pengukuran selesai, data akan dicompare 
             
            // var dataCompare = this.sampling_suhu[this.sampling_suhu.length-1];
-            var dataCompare = average(this.sampling_suhu);
+            var dataCompare = that.average(this.sampling_suhu);
           
             if (dataCompare >= Settings.Data.Treshold_Suhu){
               //SUHU TIDAK NORMAL
