@@ -148,7 +148,7 @@ class App extends Component {
         masuk_tresshold:Settings.Data.Treshold_Masuk,
         keluar_tresshold:Settings.Data.Treshold_Keluar,
         speedoRender:true,
-        suhu_result:'-', 
+        suhu_result:'aa', 
         suhu: 0,
         flag_measuring: 1
       });
