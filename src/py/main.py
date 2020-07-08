@@ -43,8 +43,8 @@ async def task_sensor():
         jarak = sonar.distance
         suhu = mlx.object_temperature + offs
         
-        if jarak <= 20:
-            suhu = suhu - regression(jarak)
+        # if jarak <= 20:
+        #     suhu = suhu - regression(jarak)
         
         await sock.broadcast_message({'suhu':suhu, 'jarak':jarak})
     
