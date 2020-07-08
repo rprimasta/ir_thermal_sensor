@@ -97,7 +97,7 @@ create_thread_async_task([
         asyncio.ensure_future(run_forever_task_2(sock.listen,1))
     ])
 tasks = [
-    asyncio.ensure_future(run_forever_task_executor(task_sensor,0.50)), #250 ms
+    asyncio.ensure_future(run_forever_task_2(task_sensor,0.50)), #250 ms
 ]
 
 asyncio.get_event_loop().run_until_complete(asyncio.wait(tasks))

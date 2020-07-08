@@ -41,7 +41,7 @@ async def run_forever_task_2(task,sleep,doTaskFirst = True):
 
                 await task()
                 start_time = time.time()
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.05)
         except Exception as e:
             print("Error run forever_task :")
             print(e) 
