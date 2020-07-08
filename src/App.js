@@ -58,11 +58,12 @@ class App extends Component {
     this.ws.onmessage = evt => {
       // on receiving a message, add it to the list of messages
       const message = JSON.parse(evt.data)
-      console.log(message);
+     
       const that = this;
       let sampling_length = 4;
       if (message.jarak <= this.state.masuk_tresshold){
         this.timer_dist = 0;
+        console.log(message);
         this.sampling_suhu.push(message.suhu);
         if (this.sampling_suhu.length >= sampling_length){     
             //pengukuran selesai, data akan dicompare 
