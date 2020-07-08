@@ -67,7 +67,7 @@ class App extends Component {
             
             var dataCompare = this.sampling_suhu[this.sampling_suhu.length-1];
           
-            if (dataCompare >= Settings.Data.Treshold_Suhu){
+            if (average(this.sampling_suhu) >= Settings.Data.Treshold_Suhu){
               //SUHU TIDAK NORMAL
               if (this.alert_show == false){
                 this.alert_show = true;
