@@ -1,4 +1,5 @@
 import asyncio
+from runtime import create_thread_async_task,create_thread_standalone_task, run_task, run_forever_task,run_forever_task_2, run_forever_task_executor
 from ws import ws
 import random
 import board
@@ -8,8 +9,7 @@ import time
 import board
 import adafruit_hcsr04
 from digitalio import DigitalInOut, Direction, Pull
-from runtime import create_thread_async_task,create_thread_standalone_task, run_task, run_forever_task,run_forever_task_2, run_forever_task_executor
- 
+
 ##lamp control output
 lamp_green = DigitalInOut(board.D23)
 lamp_green.direction = Direction.OUTPUT
@@ -86,10 +86,10 @@ async def recv_callback(data):
             await asyncio.sleep(1)
 	# #suhu tidak normal
 
-async def run_forever_task(task,sleep):
-    while True:
-        await task()
-        await asyncio.sleep(sleep)
+# async def run_forever_task(task,sleep):
+#     while True:
+#         await task()
+#         await asyncio.sleep(sleep)
 
 sock = ws(8887,recv_callback)
 create_thread_standalone_task(sock.listen,1)
