@@ -68,7 +68,7 @@ class App extends Component {
       const message = JSON.parse(evt.data)
      
       const that = this;
-      let sampling_length = 4;
+      let sampling_length = 10;
       if (message.jarak <= this.state.masuk_tresshold){
         this.timer_dist = 0;
         console.log(message);
