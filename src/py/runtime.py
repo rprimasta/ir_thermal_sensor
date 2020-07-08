@@ -66,7 +66,7 @@ async def run_forever_task_executor(task,sleep,doTaskFirst = True):
                 #await event_loop.run_in_executor(None, callback, task)
                 threading.Thread(daemon=True, target=callback,args=[task]).start() 
                 start_time = time.time()
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.05)
         except Exception as e:
             print("Error run forever_task :")
             print(e) 
