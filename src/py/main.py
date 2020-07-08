@@ -93,7 +93,7 @@ async def recv_callback(data):
 sock = ws(8887,recv_callback)
 
 create_thread_async_task([
-        asyncio.ensure_future(run_forever_task_2(ws.listen,1))
+        asyncio.ensure_future(run_forever_task_2(sock.listen,1))
     ])
 tasks = [
     asyncio.ensure_future(run_forever_task_executor(task_sensor,0.200)), #250 ms
