@@ -93,7 +93,7 @@ sock = ws(8887,recv_callback)
 
 tasks = [
     asyncio.ensure_future(sock.listen()),
-    asyncio.ensure_future(run_forever_task(task_sensor,0.500)), #250 ms
+    asyncio.ensure_future(run_forever_task(task_sensor,0.200)), #250 ms
 ]
 
 asyncio.get_event_loop().run_until_complete(asyncio.wait(tasks))
